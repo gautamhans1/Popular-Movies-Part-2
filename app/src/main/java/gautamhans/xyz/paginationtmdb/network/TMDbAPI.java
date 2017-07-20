@@ -1,5 +1,7 @@
 package gautamhans.xyz.paginationtmdb.network;
 
+import gautamhans.xyz.paginationtmdb.pojos.MovieDetailsPOJO;
+import gautamhans.xyz.paginationtmdb.pojos.Result;
 import gautamhans.xyz.paginationtmdb.pojos.TopRatedMovies;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -20,5 +22,5 @@ public interface TMDbAPI {
     Call<TopRatedMovies> getPopularMovies(@Query("api_key") String apiKey, @Query("page") int pageIndex);
 
     @GET("movie/{id}")
-    Call<TopRatedMovies> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey);
+    Call<MovieDetailsPOJO> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey);
 }

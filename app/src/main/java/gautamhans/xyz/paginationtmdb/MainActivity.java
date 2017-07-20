@@ -1,6 +1,7 @@
 package gautamhans.xyz.paginationtmdb;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         recyclerView.setHasFixedSize(true);
-        gridLayoutManager = new GridLayoutManager(context, 2);
+        gridLayoutManager = new GridLayoutManager(context, getResources().getInteger(R.integer.gridSize));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -199,5 +200,10 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         if(mToast!=null) mToast.cancel();
         mToast = Toast.makeText(context, "Movie ID: " + id, Toast.LENGTH_LONG);
         mToast.show();
+        Intent intent = new Intent(context, MovieDetails.class);
+        Bundle extras = new Bundle();
+        extras.putString("id", id);
+        intent.putExtras(extras);
+        startActivity(intent);
     }
 }

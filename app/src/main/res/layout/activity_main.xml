@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="gautamhans.xyz.paginationtmdb.MainActivity">
+    tools:context="gautamhans.xyz.paginationtmdb.MainActivity"
+    android:background="@color/colorPrimary">
 
     <ProgressBar
         android:id="@+id/progressBar"

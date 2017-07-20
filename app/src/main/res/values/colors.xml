@@ -9,4 +9,9 @@
     <color name="background_material_light">#303030</color>
     <color name="foreground_material_light">#ffffff</color>
     <color name="colorPrimaryDarker">#222222</color>
+    <color name="white">#FFF</color>
+    <color name="blue">#2196f3</color>
+    <color name="emojiColor">#FCC21B</color>
+    <color name="black">#111</color>
+
 </resources>
