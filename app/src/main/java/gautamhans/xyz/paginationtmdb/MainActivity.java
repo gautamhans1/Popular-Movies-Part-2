@@ -197,9 +197,6 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     @Override
     public void onMovieClick(String id) {
-        if(mToast!=null) mToast.cancel();
-        mToast = Toast.makeText(context, "Movie ID: " + id, Toast.LENGTH_LONG);
-        mToast.show();
         Intent intent = new Intent(context, MovieDetails.class);
         Bundle extras = new Bundle();
         extras.putString("id", id);
