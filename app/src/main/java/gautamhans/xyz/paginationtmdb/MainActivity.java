@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         fab_popular = (FloatingActionButton) findViewById(R.id.fab_popular_movies);
         fab_top_rated = (FloatingActionButton) findViewById(R.id.fab_top_rated);
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.floating_menu);
-        floatingActionMenu.setMenuButtonColorNormal(ContextCompat.getColor(context, R.color.colorAccent));
-        floatingActionMenu.setMenuButtonColorPressed(ContextCompat.getColor(context, R.color.fab_pressed));
+        floatingActionMenu.setMenuButtonColorNormal(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+        floatingActionMenu.setMenuButtonColorPressed(ContextCompat.getColor(context, R.color.colorPrimaryDarker));
         fab_popular.setOnClickListener(clickListener);
         fab_top_rated.setOnClickListener(clickListener);
 

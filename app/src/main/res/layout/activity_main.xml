@@ -31,7 +31,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         app:menu_icon="@drawable/ic_sort_white_24dp"
-        app:menu_labels_colorNormal="@color/colorPrimaryDarker"
+        app:menu_labels_colorNormal="@color/colorPrimaryDark"
         app:menu_labels_colorPressed="#444444"
         app:menu_labels_colorRipple="#66FFFFFF"
         app:menu_labels_cornerRadius="3dp"
@@ -53,7 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_stars_white_24dp"
-            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorNormal="@color/colorPrimaryDark"
+            app:fab_colorPressed="@color/colorPrimaryDarker"
             app:fab_label="Popular Movies"
             app:fab_size="mini" />
 
@@ -62,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_thumb_up_white_24dp"
-            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorNormal="@color/colorPrimaryDark"
+            app:fab_colorPressed="@color/colorPrimaryDarker"
             app:fab_label="Top Rated"
             app:fab_size="mini" />
 
