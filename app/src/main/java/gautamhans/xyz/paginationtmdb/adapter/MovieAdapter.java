@@ -1,7 +1,9 @@
 package gautamhans.xyz.paginationtmdb.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,15 +73,28 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         private TextView movieTitleView;
         private ImageView moviePoster;
+        private CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             movieTitleView = (TextView) itemView.findViewById(R.id.movie_title);
             moviePoster = (ImageView) itemView.findViewById(R.id.moviePoster);
+            cardView = (CardView) itemView.findViewById(R.id.movies_cardview);
+            cardView.setOnClickListener(clickListener);
+            movieTitleView.setOnClickListener(clickListener);
+            moviePoster.setOnClickListener(clickListener);
         }
+
+        private View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int clickedPosition = getAdapterPosition();
+                String id = String.valueOf(data.get(clickedPosition).getId());
+                Log.d(String.valueOf(this), "Movie ID: " +id);
+                movieClickListener.onMovieClick(id);
+            }
+        };
     }
-
-
     // Helper Methods
 
     public void add(Result r) {

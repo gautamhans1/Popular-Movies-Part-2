@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     private FloatingActionMenu floatingActionMenu;
     private FloatingActionButton fab_popular, fab_top_rated;
     private String type = "popular";
+    private Toast mToast;
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -194,6 +196,8 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     @Override
     public void onMovieClick(String id) {
-
+        if(mToast!=null) mToast.cancel();
+        mToast = Toast.makeText(context, "Movie ID: " + id, Toast.LENGTH_LONG);
+        mToast.show();
     }
 }
