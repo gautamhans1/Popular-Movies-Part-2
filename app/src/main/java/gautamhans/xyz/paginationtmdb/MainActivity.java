@@ -28,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements PaginationAdapterCallback {
+public class MainActivity extends AppCompatActivity implements PaginationAdapterCallback, MovieAdapter.MovieClickListener {
 
     private static final int PAGE_START = 1;
     private RecyclerView recyclerView;
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
                     List<Result> data = response.body().getResults();
                     TOTAL_PAGES = response.body().getTotalPages();
                     Log.d("Response", "Total Movies: " + data.size() + "\nTotal Pages: " + TOTAL_PAGES);
-                    movieAdapter = new MovieAdapter(data, context);
+                    movieAdapter = new MovieAdapter(data, context, MainActivity.this);
                     recyclerView.setAdapter(movieAdapter);
                     if (currentPage <= TOTAL_PAGES) movieAdapter.addLoadingFooter();
                     else isLastPage = true;
@@ -190,5 +190,10 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     @Override
     public void retryPageLoad() {
         loadNextPage();
+    }
+
+    @Override
+    public void onMovieClick(String id) {
+
     }
 }

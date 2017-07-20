@@ -32,9 +32,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private boolean retryPageLoad = false;
     private PaginationAdapterCallback mCallback;
 
-    public MovieAdapter(List<Result> data, Context context) {
+    private MovieClickListener movieClickListener;
+
+    public interface MovieClickListener{
+        void onMovieClick(String id);
+    }
+
+    public MovieAdapter(List<Result> data, Context context, MovieClickListener movieClickListener) {
         this.data = data;
         this.context = context;
+        this.movieClickListener = movieClickListener;
     }
 
     @Override
@@ -48,7 +55,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
         holder.movieTitleView.setText(data.get(position).getTitle());
         Glide.with(context).load(POSTER_BASE_URL + data.get(position).getPosterPath())
-        .into(holder.moviePoster);
+                // TODO Make a new Placeholder Image for Movie Poster
+                .placeholder(R.drawable.noposter)
+                .error(R.drawable.noposter)
+                .into(holder.moviePoster);
         holder.itemView.setTag(data.get(position).getId());
     }
 
@@ -69,6 +79,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         }
     }
 
+
+    // Helper Methods
 
     public void add(Result r) {
         data.add(r);
