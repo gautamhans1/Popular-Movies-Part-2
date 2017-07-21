@@ -34,5 +34,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
     testCompile 'junit:junit:4.12'
 }

@@ -3,6 +3,7 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#80cbc4</color>
+    <color name="colorCardView">#363636</color>
     <color name="fab_pressed">#96eae2</color>
     <color name="movieTitle">#FFF</color>
     <color name="primary_material_dark_1">#212121</color>

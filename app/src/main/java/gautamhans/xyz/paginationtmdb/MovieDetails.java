@@ -2,6 +2,11 @@ package gautamhans.xyz.paginationtmdb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
@@ -10,15 +15,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import gautamhans.xyz.paginationtmdb.network.TMDbAPI;
 import gautamhans.xyz.paginationtmdb.pojos.MovieDetailsPOJO;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,8 +48,9 @@ public class MovieDetails extends AppCompatActivity {
     private static String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w300/";
     private TextView movieTitle, movieTagLine, movieReleasedOn, movieSynopsis, movieRatingText;
     private RatingBar movieRating;
-    private ImageView moviePoster;
+    private ImageView moviePoster, bgImage;
     private Context context = MovieDetails.this;
+    private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +77,7 @@ public class MovieDetails extends AppCompatActivity {
         movieRating = (RatingBar) findViewById(R.id.movie_rating);
         moviePoster = (ImageView) findViewById(R.id.movie_poster);
         movieRatingText = (TextView) findViewById(R.id.movie_rating_text);
+        frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(TMDbAPI.BASE_URL)
@@ -93,6 +104,17 @@ public class MovieDetails extends AppCompatActivity {
                     if(actionBar!=null){
                         actionBar.setTitle(movieDetailsPOJO.getTitle());
                     }
+
+                    /*Blur Transformation*/
+//                    //TODO bring a placeholder here
+//                    Glide.with(context).load(POSTER_BASE_URL + movieDetailsPOJO.getPosterPath()).asBitmap().transform(new BlurTransformation(context, 100)).into(new SimpleTarget<Bitmap>() {
+//                        @Override
+//                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+//                            Drawable drawable = new BitmapDrawable(resource);
+//
+//                            frameLayout.setBackground(drawable);
+//                        }
+//                    });
                     Glide.with(context).load(POSTER_BASE_URL + movieDetailsPOJO.getPosterPath()).placeholder(R.drawable.noposter)
                             .error(R.drawable.noposter).into(moviePoster);
                     movieTitle.setText(movieDetailsPOJO.getTitle());
@@ -100,6 +122,7 @@ public class MovieDetails extends AppCompatActivity {
                     movieReleasedOn.setText(movieDetailsPOJO.getReleaseDate());
                     movieSynopsis.setText(movieDetailsPOJO.getOverview());
                     movieRating.setRating(Float.parseFloat(String.valueOf(movieDetailsPOJO.getVoteAverage())));
+                    movieRatingText.setText(String.valueOf(movieDetailsPOJO.getVoteAverage()));
 
                 }
             }
