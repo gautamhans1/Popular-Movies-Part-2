@@ -3,6 +3,7 @@ package gautamhans.xyz.paginationtmdb.network;
 import gautamhans.xyz.paginationtmdb.pojos.MovieDetailsPOJO;
 import gautamhans.xyz.paginationtmdb.pojos.Result;
 import gautamhans.xyz.paginationtmdb.pojos.TopRatedMovies;
+import gautamhans.xyz.paginationtmdb.pojos.Trailers;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -23,4 +24,7 @@ public interface TMDbAPI {
 
     @GET("movie/{id}")
     Call<MovieDetailsPOJO> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey);
+
+    @GET("movie/{id}/trailers")
+    Call<Trailers> getTrailers(@Path("id") int id, @Query("api_key") String apiKey);
 }

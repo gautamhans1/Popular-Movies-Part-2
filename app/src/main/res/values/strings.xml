@@ -6,4 +6,5 @@
     <string name="refresh">Refresh</string>
     <string name="error_text">Connection Error. Please make sure that your internet connection is working.</string>
     <string name="movie_poster_cd">Movie Poster</string>
+    <string name="watch_trailer">Watch Trailer</string>
 </resources>
