@@ -7,4 +7,9 @@
     <string name="error_text">Connection Error. Please make sure that your internet connection is working.</string>
     <string name="movie_poster_cd">Movie Poster</string>
     <string name="watch_trailer">Watch Trailer</string>
+    <string name="author_tv">Author:</string>
+    <string name="review_text_tv">Review:</string>
+    <string name="review_more_text_tv">More:</string>
+    <string name="reviews">Read Reviews</string>
+    <string name="no_reviews_found">No Reviews Found.</string>
 </resources>

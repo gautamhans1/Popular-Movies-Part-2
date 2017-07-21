@@ -1,4 +1,4 @@
-package gautamhans.xyz.paginationtmdb.adapter;
+package gautamhans.xyz.paginationtmdb.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -12,14 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import gautamhans.xyz.paginationtmdb.R;
 import gautamhans.xyz.paginationtmdb.pojos.Result;
 import gautamhans.xyz.paginationtmdb.utils.PaginationAdapterCallback;
-import retrofit2.http.POST;
 
 /**
  * Created by Gautam on 20-Jul-17.

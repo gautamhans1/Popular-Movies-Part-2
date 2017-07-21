@@ -10,7 +10,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -20,7 +19,7 @@ import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.List;
 
-import gautamhans.xyz.paginationtmdb.adapter.MovieAdapter;
+import gautamhans.xyz.paginationtmdb.adapters.MovieAdapter;
 import gautamhans.xyz.paginationtmdb.network.TMDbAPI;
 import gautamhans.xyz.paginationtmdb.pojos.Result;
 import gautamhans.xyz.paginationtmdb.pojos.TopRatedMovies;
@@ -59,12 +58,14 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
                     type = "popular";
                     loadFirstPage();
                     getSupportActionBar().setTitle("Popular Movies");
+                    floatingActionMenu.close(true);
                     break;
 
                 case R.id.fab_top_rated:
                     type = "top_rated";
                     loadFirstPage();
                     getSupportActionBar().setTitle("Top Rated Movies");
+                    floatingActionMenu.close(true);
                     break;
 
             }
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         pullRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                currentPage = 1;
                 loadFirstPage();
             }
 
