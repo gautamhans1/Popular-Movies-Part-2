@@ -58,7 +58,7 @@ public class Reviews extends AppCompatActivity implements ReviewsAdapter.ReviewC
         noReviewsView = (TextView) findViewById(R.id.no_reviews_tv);
         actionBar = getSupportActionBar();
         if(actionBar!=null){
-            actionBar.setTitle("Review: " + movie_title);
+            actionBar.setTitle("Reviews: " + movie_title);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
