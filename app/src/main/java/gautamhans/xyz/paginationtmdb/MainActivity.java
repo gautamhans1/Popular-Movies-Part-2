@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     private FloatingActionButton fab_popular, fab_top_rated;
     private String type = "popular";
     private Toast mToast;
+    private PullRefreshLayout pullRefreshLayout;
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
+        pullRefreshLayout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         recyclerView.setHasFixedSize(true);
         gridLayoutManager = new GridLayoutManager(context, getResources().getInteger(R.integer.gridSize));
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -90,6 +93,15 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         floatingActionMenu.setMenuButtonColorPressed(ContextCompat.getColor(context, R.color.colorPrimaryDarker));
         fab_popular.setOnClickListener(clickListener);
         fab_top_rated.setOnClickListener(clickListener);
+
+        pullRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadFirstPage();
+            }
+
+
+        });
 
         try {
             if(type == "popular"){
@@ -145,8 +157,10 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         call.enqueue(new Callback<TopRatedMovies>() {
             @Override
             public void onResponse(Call<TopRatedMovies> call, Response<TopRatedMovies> response) {
-                progressBar.setVisibility(View.GONE);
+
                 if (response.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
+                    pullRefreshLayout.setRefreshing(false);
                     List<Result> data = response.body().getResults();
                     TOTAL_PAGES = response.body().getTotalPages();
                     Log.d("Response", "Total Movies: " + data.size() + "\nTotal Pages: " + TOTAL_PAGES);
