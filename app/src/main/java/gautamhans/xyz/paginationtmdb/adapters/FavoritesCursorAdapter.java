@@ -6,14 +6,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.provider.Settings;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Arrays;
 
 import gautamhans.xyz.paginationtmdb.R;
 import gautamhans.xyz.paginationtmdb.data.DatabaseContract;
@@ -46,22 +48,25 @@ public class FavoritesCursorAdapter extends RecyclerView.Adapter<FavoritesCursor
 //        int movieRatingIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_RATING);
 //        int movieReleaseIndex;
         int movieTitleIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_TITLE);
-        int moviePosterIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_TITLE);
+        int moviePosterIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_POSTER);
 
         mCursor.moveToPosition(position);
 
         String movieTitle = mCursor.getString(movieTitleIndex);
         System.out.println("Title: " + movieTitle);
+
+        //Converting blob to bytearray
         byte[] byteArray = mCursor.getBlob(moviePosterIndex);
+        System.out.println(Arrays.toString(byteArray));
+        //Converting bytearray to bitmap
+//        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+//        if(bitmap == null)
+//        Log.d("Bitmap Status: ", "NULL");
 
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        Drawable moviePoster = new BitmapDrawable(context.getResources(), bitmap);
 
-
-        holder.moviePoster.setImageDrawable(moviePoster);
+//        holder.moviePoster.setImageDrawable(moviePoster);
+        holder.moviePoster.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
         holder.movieTitle.setText(movieTitle);
-
-
     }
 
     @Override
@@ -73,6 +78,7 @@ public class FavoritesCursorAdapter extends RecyclerView.Adapter<FavoritesCursor
     }
 
     public Cursor swapCursor(Cursor c) {
+        //check if the old cursor contains the same data as new one
         if (mCursor == c) {
             return null;
         }
@@ -90,6 +96,7 @@ public class FavoritesCursorAdapter extends RecyclerView.Adapter<FavoritesCursor
     }
 
     public interface FavoriteMovieClickListener {
+        // yet to implement
         void onMovieClick(String movie_id);
     }
 
@@ -105,5 +112,7 @@ public class FavoritesCursorAdapter extends RecyclerView.Adapter<FavoritesCursor
             moviePoster = (ImageView) itemView.findViewById(R.id.moviePoster);
             cardView = (CardView) itemView.findViewById(R.id.movies_cardview);
         }
+
+        // TODO implement the click listener
     }
 }

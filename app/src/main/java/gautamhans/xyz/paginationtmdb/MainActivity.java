@@ -41,6 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity implements PaginationAdapterCallback, MovieAdapter.MovieClickListener,
         LoaderManager.LoaderCallbacks<Cursor>, FavoritesCursorAdapter.FavoriteMovieClickListener {
 
+    // selection columns for query in content provider
     public static final String[] MOVIE_COLUMNS = {
             DatabaseContract.DatabaseEntry._ID,
             DatabaseContract.DatabaseEntry.MOVIE_TITLE,
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     private String type = "popular";
     private Toast mToast;
     private PullRefreshLayout pullRefreshLayout;
+
+    //click listener for FAB
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
                     break;
 
                 case R.id.fab_show_favorites:
-                    getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, MainActivity.this);
+                    getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, MainActivity.this).forceLoad();
                     break;
             }
         }
@@ -113,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        //fab related things
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.floating_menu);
         fab_popular = (FloatingActionButton) findViewById(R.id.fab_popular_movies);
         fab_top_rated = (FloatingActionButton) findViewById(R.id.fab_top_rated);
@@ -124,9 +128,11 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         fab_top_rated.setOnClickListener(clickListener);
         fab_favorite_movies.setOnClickListener(clickListener);
 
+
         pullRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                // TODO fix this when favorites are being shown
                 currentPage = 1;
                 loadFirstPage();
             }
@@ -145,11 +151,14 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         }
 
 
+        //retrofit client
         retrofit = new Retrofit.Builder()
                 .baseUrl(TMDbAPI.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+
+        // listener method for pagination
         recyclerView.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
             @Override
             protected void loadMoreItems() {
@@ -179,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
     }
 
+    // load initial page for either top rated/popular
     private void loadFirstPage() {
 
         progressBar.setVisibility(View.VISIBLE);
@@ -209,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         });
     }
 
+    // load Next Page for movie results
     public void loadNextPage() {
         progressBar2.setVisibility(View.VISIBLE);
         tmDbAPI = retrofit.create(TMDbAPI.class);
@@ -250,16 +261,14 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         startActivity(intent);
     }
 
+
+    // Loader for loading Favorites from the ContentProvider
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<Cursor>(this) {
 
+            // this cursor will store the favorite movies
             private Cursor mData;
-
-            @Override
-            protected void onStartLoading() {
-                forceLoad();
-            }
 
             @Override
             public Cursor loadInBackground() {
@@ -290,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 //        movieAdapter = null;
         Log.d("Cursor contents: \n", "" + DatabaseUtils.dumpCursorToString(data));
         favoritesCursorAdapter = new FavoritesCursorAdapter(MainActivity.this, MainActivity.this);
+        //swapping the cursor for new data
         favoritesCursorAdapter.swapCursor(data);
         recyclerView.setAdapter(favoritesCursorAdapter);
     }
@@ -298,6 +308,4 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     public void onLoaderReset(Loader<Cursor> loader) {
         favoritesCursorAdapter.swapCursor(null);
     }
-
-
 }

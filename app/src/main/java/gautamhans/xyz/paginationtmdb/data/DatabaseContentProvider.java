@@ -23,6 +23,7 @@ public class DatabaseContentProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private DatabaseHelper databaseHelper;
 
+    //method to build uri match(es)
     public static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -50,7 +51,7 @@ public class DatabaseContentProvider extends ContentProvider {
 
         Cursor retCursor;
 
-        switch (match){
+        switch (match) {
             case MOVIES:
                 retCursor = db.query(DatabaseContract.DatabaseEntry.TABLE_NAME,
                         projection,
@@ -83,10 +84,10 @@ public class DatabaseContentProvider extends ContentProvider {
 
         Uri returnUri;
 
-        switch (match){
+        switch (match) {
             case MOVIES:
                 long id = db.insert(DatabaseContract.DatabaseEntry.TABLE_NAME, null, values);
-                if(id>0){
+                if (id > 0) {
                     returnUri = ContentUris.withAppendedId(DatabaseContract.DatabaseEntry.CONTENT_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -106,12 +107,12 @@ public class DatabaseContentProvider extends ContentProvider {
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
         int isDeleted = 0;
-        switch (match){
+        switch (match) {
             case MOVIES:
                 isDeleted = db.delete(DatabaseContract.DatabaseEntry.TABLE_NAME, selection, selectionArgs);
                 break;
         }
-        if(isDeleted!=0){
+        if (isDeleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return isDeleted;
