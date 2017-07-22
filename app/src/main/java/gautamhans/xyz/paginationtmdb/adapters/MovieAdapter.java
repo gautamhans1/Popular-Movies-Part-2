@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import gautamhans.xyz.paginationtmdb.R;
-import gautamhans.xyz.paginationtmdb.pojos.Result;
+import gautamhans.xyz.paginationtmdb.models.Result;
 import gautamhans.xyz.paginationtmdb.utils.PaginationAdapterCallback;
 
 /**
@@ -24,18 +24,14 @@ import gautamhans.xyz.paginationtmdb.utils.PaginationAdapterCallback;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
+    private static String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
     List<Result> data;
     private Context context;
-    private static String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
     private PaginationAdapterCallback mCallback;
 
     private MovieClickListener movieClickListener;
-
-    public interface MovieClickListener{
-        void onMovieClick(String id);
-    }
 
     public MovieAdapter(List<Result> data, Context context, MovieClickListener movieClickListener) {
         this.data = data;
@@ -66,39 +62,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView movieTitleView;
-        private ImageView moviePoster;
-        private CardView cardView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            movieTitleView = (TextView) itemView.findViewById(R.id.movie_title);
-            moviePoster = (ImageView) itemView.findViewById(R.id.moviePoster);
-            cardView = (CardView) itemView.findViewById(R.id.movies_cardview);
-            cardView.setOnClickListener(clickListener);
-            movieTitleView.setOnClickListener(clickListener);
-            moviePoster.setOnClickListener(clickListener);
-        }
-
-        private View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int clickedPosition = getAdapterPosition();
-                String id = String.valueOf(data.get(clickedPosition).getId());
-                Log.d(String.valueOf(this), "Movie ID: " +id);
-                movieClickListener.onMovieClick(id);
-            }
-        };
-    }
-    // Helper Methods
-
     public void add(Result r) {
         data.add(r);
         notifyItemInserted(data.size() - 1);
     }
-
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
@@ -111,6 +78,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             notifyItemRemoved(position);
         }
     }
+    // Helper Methods
 
     public Result getItem(int position) {
         return data.get(position);
@@ -125,5 +93,35 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void addLoadingFooter() {
         isLoadingAdded = true;
         add(new Result());
+    }
+
+    public interface MovieClickListener {
+        void onMovieClick(String id);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView movieTitleView;
+        private ImageView moviePoster;
+        private CardView cardView;
+        private View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int clickedPosition = getAdapterPosition();
+                String id = String.valueOf(data.get(clickedPosition).getId());
+                Log.d(String.valueOf(this), "Movie ID: " + id);
+                movieClickListener.onMovieClick(id);
+            }
+        };
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            movieTitleView = (TextView) itemView.findViewById(R.id.movie_title);
+            moviePoster = (ImageView) itemView.findViewById(R.id.moviePoster);
+            cardView = (CardView) itemView.findViewById(R.id.movies_cardview);
+            cardView.setOnClickListener(clickListener);
+            movieTitleView.setOnClickListener(clickListener);
+            moviePoster.setOnClickListener(clickListener);
+        }
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import gautamhans.xyz.paginationtmdb.R;
-import gautamhans.xyz.paginationtmdb.pojos.ReviewResult;
+import gautamhans.xyz.paginationtmdb.models.ReviewResult;
 
 /**
  * Created by Gautam on 21-Jul-17.

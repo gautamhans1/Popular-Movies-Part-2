@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +18,7 @@ import java.util.List;
 
 import gautamhans.xyz.paginationtmdb.adapters.ReviewsAdapter;
 import gautamhans.xyz.paginationtmdb.network.TMDbAPI;
-import gautamhans.xyz.paginationtmdb.pojos.ReviewResult;
+import gautamhans.xyz.paginationtmdb.models.ReviewResult;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,9 +77,9 @@ public class Reviews extends AppCompatActivity implements ReviewsAdapter.ReviewC
     private void loadReviews() {
         progressBar4.setVisibility(View.VISIBLE);
         reviewsAPI = retrofit.create(TMDbAPI.class);
-        reviewsAPI.getReviews(Integer.parseInt(movie_id), getString(R.string.tmdb)).enqueue(new Callback<gautamhans.xyz.paginationtmdb.pojos.Reviews>() {
+        reviewsAPI.getReviews(Integer.parseInt(movie_id), getString(R.string.tmdb)).enqueue(new Callback<gautamhans.xyz.paginationtmdb.models.Reviews>() {
             @Override
-            public void onResponse(Call<gautamhans.xyz.paginationtmdb.pojos.Reviews> call, Response<gautamhans.xyz.paginationtmdb.pojos.Reviews> response) {
+            public void onResponse(Call<gautamhans.xyz.paginationtmdb.models.Reviews> call, Response<gautamhans.xyz.paginationtmdb.models.Reviews> response) {
                 if (response.isSuccessful()) {
                     progressBar4.setVisibility(View.GONE);
                     List<ReviewResult> data = response.body().getReviewResults();
@@ -94,7 +93,7 @@ public class Reviews extends AppCompatActivity implements ReviewsAdapter.ReviewC
             }
 
             @Override
-            public void onFailure(Call<gautamhans.xyz.paginationtmdb.pojos.Reviews> call, Throwable t) {
+            public void onFailure(Call<gautamhans.xyz.paginationtmdb.models.Reviews> call, Throwable t) {
                 t.printStackTrace();
                 showNoReviews();
             }

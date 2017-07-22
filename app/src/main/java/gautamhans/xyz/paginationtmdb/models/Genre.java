@@ -1,25 +1,17 @@
 
-package gautamhans.xyz.paginationtmdb.pojos;
+package gautamhans.xyz.paginationtmdb.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProductionCompany {
+public class Genre {
 
-    @SerializedName("name")
-    @Expose
-    private String name;
     @SerializedName("id")
     @Expose
     private Integer id;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @SerializedName("name")
+    @Expose
+    private String name;
 
     public Integer getId() {
         return id;
@@ -27,6 +19,14 @@ public class ProductionCompany {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

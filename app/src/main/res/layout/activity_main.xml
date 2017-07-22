@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="gautamhans.xyz.paginationtmdb.MainActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    tools:context="gautamhans.xyz.paginationtmdb.MainActivity">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -21,11 +21,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbars="none" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
+
 
     </com.baoyz.widget.PullRefreshLayout>
 
@@ -39,13 +40,13 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         app:menu_animationDelayPerItem="100"
+        app:menu_fab_show_animation="@anim/fab_scale_up"
         app:menu_icon="@drawable/ic_sort_white_24dp"
         app:menu_labels_colorNormal="@color/colorPrimaryDark"
         app:menu_labels_colorPressed="#444444"
         app:menu_labels_colorRipple="#66FFFFFF"
         app:menu_labels_cornerRadius="3dp"
         app:menu_labels_ellipsize="none"
-        app:menu_fab_show_animation="@anim/fab_scale_up"
         app:menu_labels_hideAnimation="@anim/fab_scale_down"
         app:menu_labels_maxLines="-1"
         app:menu_labels_padding="8dp"
@@ -56,8 +57,7 @@
         app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
         app:menu_labels_showShadow="true"
         app:menu_labels_singleLine="false"
-        app:menu_labels_textSize="14sp"
-        >
+        app:menu_labels_textSize="14sp">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_popular_movies"
@@ -78,6 +78,18 @@
             app:fab_colorPressed="@color/colorPrimaryDarker"
             app:fab_label="Top Rated"
             app:fab_size="mini" />
+
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_show_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_heart_white_24dp"
+            app:fab_colorNormal="@color/colorPrimaryDark"
+            app:fab_colorPressed="@color/colorPrimaryDarker"
+            app:fab_label="Favorites"
+            app:fab_size="mini"
+            />
 
     </com.github.clans.fab.FloatingActionMenu>
 

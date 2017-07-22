@@ -12,4 +12,5 @@
     <string name="review_more_text_tv">More:</string>
     <string name="reviews">Read Reviews</string>
     <string name="no_reviews_found">No Reviews Found.</string>
+    <string name="add_to_favorites">Add To Favorites</string>
 </resources>

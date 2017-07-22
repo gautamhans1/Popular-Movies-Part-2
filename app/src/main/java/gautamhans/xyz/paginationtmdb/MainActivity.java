@@ -2,8 +2,13 @@ package gautamhans.xyz.paginationtmdb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,10 +24,12 @@ import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.List;
 
+import gautamhans.xyz.paginationtmdb.adapters.FavoritesCursorAdapter;
 import gautamhans.xyz.paginationtmdb.adapters.MovieAdapter;
+import gautamhans.xyz.paginationtmdb.data.DatabaseContract;
+import gautamhans.xyz.paginationtmdb.models.Result;
+import gautamhans.xyz.paginationtmdb.models.TopRatedMovies;
 import gautamhans.xyz.paginationtmdb.network.TMDbAPI;
-import gautamhans.xyz.paginationtmdb.pojos.Result;
-import gautamhans.xyz.paginationtmdb.pojos.TopRatedMovies;
 import gautamhans.xyz.paginationtmdb.utils.PaginationAdapterCallback;
 import gautamhans.xyz.paginationtmdb.utils.PaginationScrollListener;
 import retrofit2.Call;
@@ -31,14 +38,29 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements PaginationAdapterCallback, MovieAdapter.MovieClickListener {
+public class MainActivity extends AppCompatActivity implements PaginationAdapterCallback, MovieAdapter.MovieClickListener,
+        LoaderManager.LoaderCallbacks<Cursor>, FavoritesCursorAdapter.FavoriteMovieClickListener {
+
+    public static final String[] MOVIE_COLUMNS = {
+            DatabaseContract.DatabaseEntry._ID,
+            DatabaseContract.DatabaseEntry.MOVIE_TITLE,
+            DatabaseContract.DatabaseEntry.MOVIE_ID,
+            DatabaseContract.DatabaseEntry.MOVIE_TAG_LINE,
+            DatabaseContract.DatabaseEntry.MOVIE_SYNOPSIS,
+            DatabaseContract.DatabaseEntry.MOVIE_RATING,
+            DatabaseContract.DatabaseEntry.MOVIE_RELEASE,
+            DatabaseContract.DatabaseEntry.MOVIE_POSTER
+    };
+
 
     private static final int PAGE_START = 1;
+    private static final int TASK_LOADER_ID = 640;
     private RecyclerView recyclerView;
     private TMDbAPI tmDbAPI;
     private ProgressBar progressBar, progressBar2;
     private Context context = MainActivity.this;
     private MovieAdapter movieAdapter;
+    private FavoritesCursorAdapter favoritesCursorAdapter;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int TOTAL_PAGES = 10;
@@ -46,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
     private Retrofit retrofit;
     private GridLayoutManager gridLayoutManager;
     private FloatingActionMenu floatingActionMenu;
-    private FloatingActionButton fab_popular, fab_top_rated;
+    private FloatingActionButton fab_popular, fab_top_rated, fab_favorite_movies;
     private String type = "popular";
     private Toast mToast;
     private PullRefreshLayout pullRefreshLayout;
@@ -56,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
             switch (v.getId()) {
                 case R.id.fab_popular_movies:
                     type = "popular";
+                    currentPage = 1;
                     loadFirstPage();
                     getSupportActionBar().setTitle("Popular Movies");
                     floatingActionMenu.close(true);
@@ -63,11 +86,15 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
 
                 case R.id.fab_top_rated:
                     type = "top_rated";
+                    currentPage = 1;
                     loadFirstPage();
                     getSupportActionBar().setTitle("Top Rated Movies");
                     floatingActionMenu.close(true);
                     break;
 
+                case R.id.fab_show_favorites:
+                    getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, MainActivity.this);
+                    break;
             }
         }
     };
@@ -89,11 +116,13 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.floating_menu);
         fab_popular = (FloatingActionButton) findViewById(R.id.fab_popular_movies);
         fab_top_rated = (FloatingActionButton) findViewById(R.id.fab_top_rated);
+        fab_favorite_movies = (FloatingActionButton) findViewById(R.id.fab_show_favorites);
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.floating_menu);
         floatingActionMenu.setMenuButtonColorNormal(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         floatingActionMenu.setMenuButtonColorPressed(ContextCompat.getColor(context, R.color.colorPrimaryDarker));
         fab_popular.setOnClickListener(clickListener);
         fab_top_rated.setOnClickListener(clickListener);
+        fab_favorite_movies.setOnClickListener(clickListener);
 
         pullRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
@@ -106,9 +135,9 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         });
 
         try {
-            if(type == "popular"){
+            if (type.contentEquals("popular")) {
                 getSupportActionBar().setTitle("Popular Movies");
-            } else if (type == "top_rated"){
+            } else if (type.contentEquals("top_rated")) {
                 getSupportActionBar().setTitle("Top Rated Movies");
             }
         } catch (Exception e) {
@@ -220,4 +249,55 @@ public class MainActivity extends AppCompatActivity implements PaginationAdapter
         intent.putExtras(extras);
         startActivity(intent);
     }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<Cursor>(this) {
+
+            private Cursor mData;
+
+            @Override
+            protected void onStartLoading() {
+                forceLoad();
+            }
+
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    return getContentResolver().query(DatabaseContract.DatabaseEntry.CONTENT_URI,
+                            MOVIE_COLUMNS,
+                            null,
+                            null,
+                            null);
+                } catch (Exception e) {
+                    Log.e("Loader Result: ", "Failed to asynchronously load data.");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+        };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//        movieAdapter = null;
+        Log.d("Cursor contents: \n", "" + DatabaseUtils.dumpCursorToString(data));
+        favoritesCursorAdapter = new FavoritesCursorAdapter(MainActivity.this, MainActivity.this);
+        favoritesCursorAdapter.swapCursor(data);
+        recyclerView.setAdapter(favoritesCursorAdapter);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        favoritesCursorAdapter.swapCursor(null);
+    }
+
+
 }

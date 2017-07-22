@@ -1,5 +1,5 @@
 
-package gautamhans.xyz.paginationtmdb.pojos;
+package gautamhans.xyz.paginationtmdb.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

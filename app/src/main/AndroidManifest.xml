@@ -25,6 +25,11 @@
 
        <activity android:name=".Reviews"
            />
+        
+        <provider
+            android:authorities="gautamhans.xyz.paginationtmdb"
+            android:name=".data.DatabaseContentProvider"
+            android:exported="false" />
 
     </application>
 

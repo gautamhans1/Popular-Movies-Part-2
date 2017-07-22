@@ -1,10 +1,9 @@
 package gautamhans.xyz.paginationtmdb.network;
 
-import gautamhans.xyz.paginationtmdb.pojos.MovieDetailsPOJO;
-import gautamhans.xyz.paginationtmdb.pojos.Result;
-import gautamhans.xyz.paginationtmdb.pojos.Reviews;
-import gautamhans.xyz.paginationtmdb.pojos.TopRatedMovies;
-import gautamhans.xyz.paginationtmdb.pojos.Trailers;
+import gautamhans.xyz.paginationtmdb.models.MovieDetailsPOJO;
+import gautamhans.xyz.paginationtmdb.models.Reviews;
+import gautamhans.xyz.paginationtmdb.models.TopRatedMovies;
+import gautamhans.xyz.paginationtmdb.models.Trailers;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
