@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="gautamhans.xyz.paginationtmdb">
+    package="gautamhans.xyz.popularmovies">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="gautamhans.xyz.popularmovies.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,18 +21,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MovieDetails"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".Reviews" />
+            android:name="gautamhans.xyz.popularmovies.MovieDetails"
+            android:parentActivityName="gautamhans.xyz.popularmovies.MainActivity" />
+        <activity android:name="gautamhans.xyz.popularmovies.Reviews" />
 
         <provider
-            android:name=".data.DatabaseContentProvider"
-            android:authorities="gautamhans.xyz.paginationtmdb"
+            android:name="gautamhans.xyz.popularmovies.data.DatabaseContentProvider"
+            android:authorities="gautamhans.xyz.popularmovies"
             android:exported="false" />
 
         <activity
-            android:name=".OfflineMovie"
-            android:parentActivityName=".MainActivity" />
+            android:name="gautamhans.xyz.popularmovies.OfflineMovie"
+            android:parentActivityName="gautamhans.xyz.popularmovies.MainActivity" />
     </application>
 
 </manifest>
