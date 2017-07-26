@@ -35,7 +35,6 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
-    compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
     compile 'com.github.jd-alexander:LikeButton:0.2.1'
     testCompile 'junit:junit:4.12'
 }

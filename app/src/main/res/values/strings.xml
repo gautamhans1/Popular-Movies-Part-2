@@ -13,4 +13,5 @@
     <string name="reviews">Read Reviews</string>
     <string name="no_reviews_found">No Reviews Found.</string>
     <string name="add_to_favorites">Add To Favorites</string>
+    <string name="no_movies_found">No movie found. \nPlease add some. :)</string>
 </resources>

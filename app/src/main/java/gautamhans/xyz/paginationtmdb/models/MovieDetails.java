@@ -6,6 +6,10 @@ package gautamhans.xyz.paginationtmdb.models;
 
 public class MovieDetails {
 
+    private String MOVIE_TITLE, MOVIE_TAG_LINE, MOVIE_RELEASE, MOVIE_SYNOPSIS;
+    private float MOVIE_RATING;
+    private byte[] MOVIE_POSTER;
+
     public MovieDetails(String MOVIE_TITLE, String MOVIE_TAG_LINE, String MOVIE_RELEASE, String MOVIE_SYNOPSIS, float MOVIE_RATING, byte[] MOVIE_POSTER) {
         this.MOVIE_TITLE = MOVIE_TITLE;
         this.MOVIE_TAG_LINE = MOVIE_TAG_LINE;
@@ -62,9 +66,5 @@ public class MovieDetails {
     public void setMOVIE_POSTER(byte[] MOVIE_POSTER) {
         this.MOVIE_POSTER = MOVIE_POSTER;
     }
-
-    private String MOVIE_TITLE, MOVIE_TAG_LINE, MOVIE_RELEASE, MOVIE_SYNOPSIS;
-    private float MOVIE_RATING;
-    private byte[] MOVIE_POSTER;
 
 }

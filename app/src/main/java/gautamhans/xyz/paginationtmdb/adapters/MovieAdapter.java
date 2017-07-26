@@ -90,10 +90,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         }
     }
 
-    public void addLoadingFooter() {
-        isLoadingAdded = true;
-        add(new Result());
-    }
 
     public interface MovieClickListener {
         void onMovieClick(String id);

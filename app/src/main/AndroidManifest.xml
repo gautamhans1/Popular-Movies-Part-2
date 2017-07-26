@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="gautamhans.xyz.paginationtmdb">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,18 +20,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MovieDetails"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".Reviews" />
 
-        <activity android:name=".MovieDetails"
-            android:parentActivityName=".MainActivity"/>
-
-       <activity android:name=".Reviews"
-           />
-        
         <provider
-            android:authorities="gautamhans.xyz.paginationtmdb"
             android:name=".data.DatabaseContentProvider"
+            android:authorities="gautamhans.xyz.paginationtmdb"
             android:exported="false" />
 
+        <activity
+            android:name=".OfflineMovie"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

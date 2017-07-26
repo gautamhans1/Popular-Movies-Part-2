@@ -187,6 +187,7 @@ public class MovieDetails extends AppCompatActivity {
         movieSynopsis.setVisibility(View.GONE);
         movieReleasedOnText.setVisibility(View.GONE);
         reviewTvDetails.setVisibility(View.GONE);
+        likeButton.setVisibility(View.GONE);
 
         tmDbAPI = retrofit.create(TMDbAPI.class);
 
@@ -199,6 +200,7 @@ public class MovieDetails extends AppCompatActivity {
                     movieSynopsis.setVisibility(View.VISIBLE);
                     movieReleasedOnText.setVisibility(View.VISIBLE);
                     reviewTvDetails.setVisibility(View.VISIBLE);
+                    likeButton.setVisibility(View.VISIBLE);
                     MovieDetailsPOJO movieDetailsPOJO = response.body();
                     if (actionBar != null) {
                         actionBar.setTitle(movieDetailsPOJO.getTitle());
@@ -214,6 +216,7 @@ public class MovieDetails extends AppCompatActivity {
 //                            frameLayout.setBackground(drawable);
 //                        }
 //                    });
+
                     Glide.with(context).load(POSTER_BASE_URL + movieDetailsPOJO.getPosterPath()).placeholder(R.drawable.noposter)
                             .error(R.drawable.noposter).into(moviePoster);
                     Glide.with(context).load(POSTER_BASE_URL + movieDetailsPOJO.getPosterPath())

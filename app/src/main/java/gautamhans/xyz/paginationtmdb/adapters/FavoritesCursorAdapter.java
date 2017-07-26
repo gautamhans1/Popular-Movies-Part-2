@@ -2,13 +2,9 @@ package gautamhans.xyz.paginationtmdb.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +24,16 @@ public class FavoritesCursorAdapter extends RecyclerView.Adapter<FavoritesCursor
 
     private Context context;
     private Cursor mCursor;
-    private FavoriteMovieClickListener favoriteMovieClickListener;
+    private FavoriteMovieClickListner favoriteMovieClickListner;
+    int movieIdIndex, movieTitleIndex;
 
-    public FavoritesCursorAdapter(Context context, FavoriteMovieClickListener favoriteMovieClickListener) {
+    public interface FavoriteMovieClickListner{
+        void onFavoriteMovieClick(String movie_id, String movie_title);
+    }
+
+    public FavoritesCursorAdapter(Context context, FavoriteMovieClickListner favoriteMovieClickListner) {
         this.context = context;
-        this.favoriteMovieClickListener = favoriteMovieClickListener;
+        this.favoriteMovieClickListner = favoriteMovieClickListner;
     }
 
     @Override
@@ -43,12 +44,10 @@ public class FavoritesCursorAdapter extends RecyclerView.Adapter<FavoritesCursor
 
     @Override
     public void onBindViewHolder(FavoritesCursorAdapter.ViewHolder holder, int position) {
-//        int idIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_ID);
-//        int movieTagLineIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_TAG_LINE);
-//        int movieRatingIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_RATING);
-//        int movieReleaseIndex;
-        int movieTitleIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_TITLE);
+
+        movieTitleIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_TITLE);
         int moviePosterIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_POSTER);
+        movieIdIndex = mCursor.getColumnIndex(DatabaseContract.DatabaseEntry.MOVIE_ID);
 
         mCursor.moveToPosition(position);
 
@@ -58,20 +57,14 @@ public class FavoritesCursorAdapter extends RecyclerView.Adapter<FavoritesCursor
         //Converting blob to bytearray
         byte[] byteArray = mCursor.getBlob(moviePosterIndex);
         System.out.println(Arrays.toString(byteArray));
-        //Converting bytearray to bitmap
-//        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-//        if(bitmap == null)
-//        Log.d("Bitmap Status: ", "NULL");
 
-
-//        holder.moviePoster.setImageDrawable(moviePoster);
         holder.moviePoster.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
         holder.movieTitle.setText(movieTitle);
     }
 
     @Override
     public int getItemCount() {
-        if(mCursor == null ){
+        if (mCursor == null) {
             return 0;
         }
         return mCursor.getCount();
@@ -83,8 +76,8 @@ public class FavoritesCursorAdapter extends RecyclerView.Adapter<FavoritesCursor
             return null;
         }
 
-        if(c!=null)
-        c.moveToFirst();
+        if (c != null)
+            c.moveToFirst();
 
         this.mCursor = c;
 
@@ -95,24 +88,29 @@ public class FavoritesCursorAdapter extends RecyclerView.Adapter<FavoritesCursor
         return c;
     }
 
-    public interface FavoriteMovieClickListener {
-        // yet to implement
-        void onMovieClick(String movie_id);
-    }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView movieTitle;
         private ImageView moviePoster;
         private CardView cardView;
+        private View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCursor.moveToPosition(getAdapterPosition());
+                favoriteMovieClickListner.onFavoriteMovieClick(mCursor.getString(movieIdIndex), mCursor.getString(movieTitleIndex));
+            }
+        };
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             movieTitle = (TextView) itemView.findViewById(R.id.movie_title);
             moviePoster = (ImageView) itemView.findViewById(R.id.moviePoster);
             cardView = (CardView) itemView.findViewById(R.id.movies_cardview);
+            cardView.setOnClickListener(clickListener);
+            moviePoster.setOnClickListener(clickListener);
+            movieTitle.setOnClickListener(clickListener);
         }
 
-        // TODO implement the click listener
     }
 }
